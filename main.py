@@ -1,5 +1,5 @@
+import psycopg2
 from getting_data_HH import GetInfoHH
-from create_table import CreateTable
 from working_with_table import DBManager
 
 # здороваюсь с пользователем и показываю какие компании я выбрал для поиска вакансий
@@ -27,15 +27,16 @@ user = input()
 print("Напишите пожалуйста host")
 host = input()
 
-# Спрашиваю у пользователя создал ли он таблицу для своей базы данных или ее необходимо создать
-answer_1 = input("Напишите создадим если таблицу ещё не создавали ")
-if answer_1 == "создадим":
-    CreateTable.create_table(host, database, user, password)
+# Создаю соединение с базой данных
+conn = psycopg2.connect(host='localhost', database='course_work_5', user='postgres', password='mr34mr58')
+cur = conn.cursor()
+
+# Создаю таблицу
+first = DBManager(cur, conn)
+first.create_table()
 
 # Вношу в таблицу данные о вакансиях
-GetInfoHH.get_info(host, database, user, password)
-
-first = DBManager(host, database, user, password)
+GetInfoHH.get_info(cur, conn)
 
 # Спрашиваю у пользователя какую функцию вывести
 while True:
@@ -47,7 +48,7 @@ while True:
           "3 - выведет среднюю зарплату по вакансиям"
           "4 - выведет список всех вакансий, у которых зарплата выше средней по всем вакансиям"
           "5 - выведет список всех вакансий, в названии которых содержатся переданные вами слова, например python")
-    answer_3 = input("Какую функцию хотите вывести?(от 1 до 5), если хотите закончить пишите стоп")
+    answer_3 = int(input("Какую функцию хотите вывести?(от 1 до 5), если хотите закончить пишите стоп"))
     if answer_3 == 1:
         first.get_companies_and_vacancies_count()
     elif answer_3 == 2:
@@ -61,3 +62,7 @@ while True:
         first.get_vacancies_with_keyword(answer_2)
     else:
         break
+
+# Закрываю соединение с БД
+cur.close()
+conn.close()
