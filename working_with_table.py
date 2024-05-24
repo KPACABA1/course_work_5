@@ -66,9 +66,10 @@ class DBManager(DBManagerAbstract):
         vacancy - название вакансии
         salary_from - стартовая зарплата
         salary_to - максимальная зарплата
-        link - ссылка на вакансию"""
+        link - ссылка на вакансию
+        Если таблица уже была создана она удаляется и создается заново"""
 
-        self.cur.execute("CREATE TABLE information (company varchar(55), vacancy varchar(100), "
+        self.cur.execute("CREATE TABLE IF NOT EXISTS information (company varchar(55), vacancy varchar(100), "
                          "salary_from int, salary_to int, link text);")
         self.conn.commit()
 

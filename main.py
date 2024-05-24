@@ -48,16 +48,16 @@ while True:
           "3 - выведет среднюю зарплату по вакансиям"
           "4 - выведет список всех вакансий, у которых зарплата выше средней по всем вакансиям"
           "5 - выведет список всех вакансий, в названии которых содержатся переданные вами слова, например python")
-    answer_3 = int(input("Какую функцию хотите вывести?(от 1 до 5), если хотите закончить пишите стоп"))
-    if answer_3 == 1:
+    answer_3 = input("Какую функцию хотите вывести?(от 1 до 5), если хотите закончить пишите стоп")
+    if answer_3 == '1':
         first.get_companies_and_vacancies_count()
-    elif answer_3 == 2:
+    elif answer_3 == '2':
         first.get_all_vacancies()
-    elif answer_3 == 3:
+    elif answer_3 == '3':
         first.get_avg_salary()
-    elif answer_3 == 4:
+    elif answer_3 == '4':
         first.get_vacancies_with_higher_salary()
-    elif answer_3 == 5:
+    elif answer_3 == '5':
         answer_2 = input("Введите слово для поиска по вакансиям")
         first.get_vacancies_with_keyword(answer_2)
     else:
