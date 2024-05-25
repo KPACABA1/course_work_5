@@ -28,7 +28,7 @@ print("Напишите пожалуйста host")
 host = input()
 
 # Создаю соединение с базой данных
-conn = psycopg2.connect(host='localhost', database='course_work_5', user='postgres', password='mr34mr58')
+conn = psycopg2.connect(host=host, database=database, user=user, password=password)
 cur = conn.cursor()
 
 # Создаю таблицу
