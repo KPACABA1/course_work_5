@@ -25,33 +25,17 @@ class GetInfoHH(GetInfoHHAbstract):
         # Запускаю цикл по id, чтобы вывести все вакансии от этих работодателей
         for id_company in id_companies:
             url = f'https://api.hh.ru/vacancies?employer_id={id_company}'
-            params = {'page': 0, 'per_page': 100}
+            params = {'page': 0, 'per_page': 99}
             headers = {'User-Agent': 'HH-User-Agent'}
             response = requests.get(url, headers=headers, params=params)
             response_json = response.json()['items']
 
             # Определяю название компании(как то может более правильно можно это сделать? Подскажите)
-            name_company = ''
-            if id_company == 1740:
-                name_company = 'Яндекс'
-            elif id_company == 1473866:
-                name_company = 'Сбербанк-Сервис'
-            elif id_company == 3776:
-                name_company = 'МТС'
-            elif id_company == 2523:
-                name_company = 'М.Видео-Эльдорадо'
-            elif id_company == 776314:
-                name_company = 'Парфюмерно-косметический супермаркет Золотое Яблоко'
-            elif id_company == 4598057:
-                name_company = 'УГМК-Телеком'
-            elif id_company == 5599481:
-                name_company = 'Сандуны Урал'
-            elif id_company == 1459249:
-                name_company = 'Bright Fit'
-            elif id_company == 614346:
-                name_company = 'Айдиго'
-            elif id_company == 2919210:
-                name_company = 'ГБУЗ Областная больница г. Троицк'
+            name_company_dict = {1740: 'Яндекс', 1473866: 'Сбербанк-Сервис', 3776: 'МТС', 2523: 'М.Видео-Эльдорадо',
+                                 776314: 'Парфюмерно-косметический супермаркет Золотое Яблоко', 4598057: 'УГМК-Телеком',
+                                 5599481: 'Сандуны Урал', 1459249: 'Bright Fit', 614346: 'Айдиго',
+                                 2919210: 'ГБУЗ Областная больница г. Троицк'}
+            name_company = name_company_dict[id_company]
 
             # Запускаю цикл по полученной информации о вакансиях от определённого работодателя и записываю эти данные
             # в таблицу
