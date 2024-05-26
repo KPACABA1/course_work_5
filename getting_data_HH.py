@@ -25,8 +25,9 @@ class GetInfoHH(GetInfoHHAbstract):
         # Запускаю цикл по id, чтобы вывести все вакансии от этих работодателей
         for id_company in id_companies:
             url = f'https://api.hh.ru/vacancies?employer_id={id_company}'
+            params = {'page': 0, 'per_page': 100}
             headers = {'User-Agent': 'HH-User-Agent'}
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, params=params)
             response_json = response.json()['items']
 
             # Определяю название компании(как то может более правильно можно это сделать? Подскажите)
