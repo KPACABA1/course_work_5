@@ -96,7 +96,7 @@ class DBManager(DBManagerAbstract):
 
     def get_vacancies_with_higher_salary(self):
         """Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям."""
-        self.cur.execute("SELECT * FROM information WHERE salary_from > 69134")
+        self.cur.execute("SELECT * FROM information WHERE salary_from > (SELECT AVG(salary_from) FROM information WHERE salary_from > 0)")
         info = self.cur.fetchall()
         for i in info:
             print(i)
