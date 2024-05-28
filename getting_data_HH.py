@@ -30,13 +30,6 @@ class GetInfoHH(GetInfoHHAbstract):
             response = requests.get(url, headers=headers, params=params)
             response_json = response.json()['items']
 
-            # Определяю название компании(как то может более правильно можно это сделать? Подскажите)
-            name_company_dict = {1740: 'Яндекс', 1473866: 'Сбербанк-Сервис', 3776: 'МТС', 2523: 'М.Видео-Эльдорадо',
-                                 776314: 'Парфюмерно-косметический супермаркет Золотое Яблоко', 4598057: 'УГМК-Телеком',
-                                 5599481: 'Сандуны Урал', 1459249: 'Bright Fit', 614346: 'Айдиго',
-                                 2919210: 'ГБУЗ Областная больница г. Троицк'}
-            name_company = name_company_dict[id_company]
-
             # Запускаю цикл по полученной информации о вакансиях от определённого работодателя и записываю эти данные
             # в таблицу
             for vacancy in response_json:
@@ -45,21 +38,21 @@ class GetInfoHH(GetInfoHHAbstract):
                     # Если есть информация о стартовой и максимальной заработной плате
                     if vacancy['salary']['from'] and vacancy['salary']['to']:
                         cur.execute("INSERT INTO information VALUES (%s, %s, %s, %s, %s)",
-                                    [name_company, vacancy['name'], vacancy['salary']['from'],
+                                    [vacancy['employer']['name'], vacancy['name'], vacancy['salary']['from'],
                                      vacancy['salary']['to'], vacancy['alternate_url']])
                     # Если есть информация только о стартовой зарплате
                     elif vacancy['salary']['from']:
                         cur.execute("INSERT INTO information VALUES (%s, %s, %s, %s, %s)",
-                                    [name_company, vacancy['name'], vacancy['salary']['from'], 0,
+                                    [vacancy['employer']['name'], vacancy['name'], vacancy['salary']['from'], 0,
                                         vacancy['alternate_url']])
                     # Если есть информация только о максимальной зарплате
                     elif vacancy['salary']['to']:
                         cur.execute("INSERT INTO information VALUES (%s, %s, %s, %s, %s)",
-                                    [name_company, vacancy['name'], 0, vacancy['salary']['to'],
+                                    [vacancy['employer']['name'], vacancy['name'], 0, vacancy['salary']['to'],
                                         vacancy['alternate_url']])
                 # Если вообще информация о зарплате не указана
                 else:
                     cur.execute("INSERT INTO information VALUES (%s, %s, %s, %s, %s)",
-                                [name_company, vacancy['name'], 0, 0,
+                                [vacancy['employer']['name'], vacancy['name'], 0, 0,
                                     vacancy['alternate_url']])
                 conn.commit()
